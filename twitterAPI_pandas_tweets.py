@@ -5,6 +5,8 @@
 # import modules 
 import pandas as pd 
 import tweepy 
+from PIL import Image
+import urllib.request as urllib2
 
 
 # function to display data of each tweet 
@@ -33,7 +35,8 @@ def scrape(words, date_since, numtweet):
 	# The number of tweets can be restricted using .items(number of tweets) 
 	tweets = tweepy.Cursor(api.search, q=words, lang="en", 
 						#since=date_since, 
-						tweet_mode='extended').items(numtweet) 
+						tweet_mode='extended',
+						include_entities=True).items(numtweet) 
 	
 	# .Cursor() returns an iterable object. Each item in 
 	# the iterator has various attributes that you can access to 
@@ -53,6 +56,8 @@ def scrape(words, date_since, numtweet):
 		totaltweets = tweet.user.statuses_count 
 		retweetcount = tweet.retweet_count 
 		hashtags = tweet.entities['hashtags'] 
+		images=tweet.entities['media']
+
 		
 		# Retweets can be distinguished by a retweeted_status attribute, 
 		# in case it is an invalid reference, except block will be executed 
@@ -71,32 +76,39 @@ def scrape(words, date_since, numtweet):
 		
 		# Function call to print tweet data on screen 
 		printtweetdata(i, ith_tweet) 
+		print("Images: ", images)
+		for image in images:
+			im = Image.open(urllib2.urlopen(image['media_url']))
+			#im.show()
+
 		i = i+1
-	filename = 'scraped_tweets.csv'
 	
+	
+	#filename = 'scraped_tweets.csv'
+
 	# we will save our database as a CSV file. 
-	db.to_csv(filename) 
+	#db.to_csv(filename) 
 
 
 if __name__ == '__main__': 
 	
 	# Enter your own credentials obtained 
 	# from your developer account 
-	consumer_key = "XXXXXXXXXXXXXXXXXXXXX"
-	consumer_secret = "XXXXXXXXXXXXXXXXXXXXX"
-	access_key = "XXXXXXXXXXXXXXXXXXXXX"
-	access_secret = "XXXXXXXXXXXXXXXXXXXXX"
+	consumer_key = "runsra61MhrLsjwgOYlANBzu9"
+	consumer_secret = "fVChsb8y4Aq9zGqgYrINmza8klJobvkWhZdkXhZxhjxGGa4OMZ"
+	access_key = "1364862750518730752-h0V0VfPBpc8pB97dmsHqTS0bGErn1o"
+	access_secret = "q9Pj0olBCb9vbI1DOYe2jP26VWB8Xvy8RfFqbQtAFMifN"
 	auth = tweepy.OAuthHandler(consumer_key, consumer_secret) 
 	auth.set_access_token(access_key, access_secret) 
 	api = tweepy.API(auth) 
 	
 	# Enter Hashtag and initial date 
 	print("Enter Twitter HashTag to search for") 
-	words = "save_my_plant"
+	words = "#save_my_plant" #Must include the pound(#) symbol to explicitly serach for only hashtags.
 	print("Enter Date since The Tweets are required in yyyy-mm--dd") 
-	#date_since = input() 
+	date_since = None #input() 
 	
 	# number of tweets you want to extract in one run 
-	numtweet = 100
+	numtweet = 5
 	scrape(words, date_since, numtweet) 
 	print('Scraping has completed!') 
