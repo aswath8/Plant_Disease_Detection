@@ -76,9 +76,10 @@ def scrape(words, date_since, numtweet):
 		
 		# Function call to print tweet data on screen 
 		printtweetdata(i, ith_tweet) 
-		print("Images: ", images)
 		for image in images:
-			im = Image.open(urllib2.urlopen(image['media_url']))
+			media_url=image['media_url']
+			print("Images: ", media_url)
+			im = Image.open(urllib2.urlopen(media_url))
 			#im.show()
 
 		i = i+1
