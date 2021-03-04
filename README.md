@@ -5,8 +5,8 @@ conda list -e > requirements.txt
 ```
 #To export environment
 ```
-activate <environment-name>
-conda env export > <environment-name>.yml
+activate ericsson
+conda env export > ericsson.yml
 ```
 #For other person to use the environment
 ```
