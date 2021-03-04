@@ -22,6 +22,7 @@ def printtweetdata(n, ith_tweet):
 	print(f"Retweet Count:{ith_tweet[6]}") 
 	print(f"Tweet Text:{ith_tweet[7]}") 
 	print(f"Hashtags Used:{ith_tweet[8]}") 
+	print(f"Tweet ID:{ith_tweet[9]}") 
 
 
 # function to perform data extraction 
@@ -29,7 +30,7 @@ def scrape(words, date_since, numtweet):
 	
 	# Creating DataFrame using pandas 
 	db = pd.DataFrame(columns=['username', 'description', 'location', 'following', 
-							'followers', 'totaltweets', 'retweetcount', 'text', 'hashtags']) 
+							'followers', 'totaltweets', 'retweetcount', 'text', 'hashtags','tweetID']) 
 	
 	# We are using .Cursor() to search through twitter for the required tweets. 
 	# The number of tweets can be restricted using .items(number of tweets) 
@@ -57,6 +58,8 @@ def scrape(words, date_since, numtweet):
 		retweetcount = tweet.retweet_count 
 		hashtags = tweet.entities['hashtags'] 
 		images=tweet.entities['media']
+		tweetId= tweet.id
+		
 
 		
 		# Retweets can be distinguished by a retweeted_status attribute, 
@@ -71,7 +74,7 @@ def scrape(words, date_since, numtweet):
 		
 		# Here we are appending all the extracted information in the DataFrame 
 		ith_tweet = [username, description, location, following, 
-					followers, totaltweets, retweetcount, text, hashtext] 
+					followers, totaltweets, retweetcount, text, hashtext, tweetId] 
 		db.loc[len(db)] = ith_tweet 
 		
 		# Function call to print tweet data on screen 
@@ -85,6 +88,8 @@ def scrape(words, date_since, numtweet):
 		i = i+1
 	
 	
+	#api.update_status('The solution to the problem is: ', tweetId)
+
 	#filename = 'scraped_tweets.csv'
 
 	# we will save our database as a CSV file. 
@@ -97,8 +102,8 @@ if __name__ == '__main__':
 	# from your developer account 
 	consumer_key = "runsra61MhrLsjwgOYlANBzu9"
 	consumer_secret = "fVChsb8y4Aq9zGqgYrINmza8klJobvkWhZdkXhZxhjxGGa4OMZ"
-	access_key = "1364862750518730752-h0V0VfPBpc8pB97dmsHqTS0bGErn1o"
-	access_secret = "q9Pj0olBCb9vbI1DOYe2jP26VWB8Xvy8RfFqbQtAFMifN"
+	access_key = "1364862750518730752-H5jTeNtJBbVxEg9iYpbZ3Ga7gZw5Oc"
+	access_secret = "aOQS9MUKEJ6kpLTk5Na1XSdNdcAAuq0rdalF7Hz0lIaoa"
 	auth = tweepy.OAuthHandler(consumer_key, consumer_secret) 
 	auth.set_access_token(access_key, access_secret) 
 	api = tweepy.API(auth) 
