@@ -10,7 +10,7 @@ conda env export > ericsson.yml
 ```
 For other person to use the environment
 ```
-conda env create -f ericsson.yml
+conda env create --file ericsson.yml -n ericsson
 ```
 
 Main script:
