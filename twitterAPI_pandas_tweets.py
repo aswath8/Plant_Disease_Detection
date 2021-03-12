@@ -23,6 +23,15 @@ def printtweetdata(n, ith_tweet):
 	print(f"Tweet Text:{ith_tweet[7]}") 
 	print(f"Hashtags Used:{ith_tweet[8]}") 
 	print(f"Tweet ID:{ith_tweet[9]}") 
+	print(f"Replies:{ith_tweet[11]}")
+	
+	images = ith_tweet[10]
+	for image in images:
+		media_url=image['media_url']
+		print("Images: ", media_url)
+		im = Image.open(urllib2.urlopen(media_url))
+		#im.show()
+
 
 
 # function to perform data extraction 
@@ -30,12 +39,12 @@ def scrape(words, date_since, numtweet):
 	
 	# Creating DataFrame using pandas 
 	db = pd.DataFrame(columns=['username', 'description', 'location', 'following', 
-							'followers', 'totaltweets', 'retweetcount', 'text', 'hashtags','tweetID']) 
+							'followers', 'totaltweets', 'retweetcount', 'text', 'hashtags','tweetID','images','replies',]) 
 	
 	# We are using .Cursor() to search through twitter for the required tweets. 
 	# The number of tweets can be restricted using .items(number of tweets) 
 	tweets = tweepy.Cursor(api.search, q=words, lang="en", 
-						#since=date_since, 
+						since='2021-01-01', 
 						tweet_mode='extended',
 						include_entities=True).items(numtweet) 
 	
@@ -49,6 +58,10 @@ def scrape(words, date_since, numtweet):
 	
 	# we will iterate over each tweet in the list for extracting information about each tweet 
 	for tweet in list_tweets: 
+		
+		reply_tweets = tweepy.Cursor(api.search, q='to:{}'.format(user_name),
+                                since_id=tweet.id, tweet_mode='extended').items()
+
 		username = tweet.user.screen_name 
 		description = tweet.user.description 
 		location = tweet.user.location 
@@ -59,9 +72,33 @@ def scrape(words, date_since, numtweet):
 		hashtags = tweet.entities['hashtags'] 
 		images=tweet.entities['media']
 		tweetId= tweet.id
+		replies=[]
+		while True:
+			try:
+				reply = reply_tweets.next()
+				if not hasattr(reply, 'in_reply_to_status_id_str'):
+					continue
+				if reply.in_reply_to_status_id == tweetId:
+					replies.append(reply.full_text)
+					print("reply of tweet:{}".format(reply.full_text))
+
+			except tweepy.RateLimitError as e:
+				logging.error("Twitter api rate limit reached".format(e))
+				time.sleep(60)
+				continue
+
+			except tweepy.TweepError as e:
+				print("Tweepy error occured:{}".format(e))
+				break
+
+			except StopIteration:
+				break
+
+			except Exception as e:
+				print("Failed while fetching replies {}".format(e))
+				break
 		
 
-		
 		# Retweets can be distinguished by a retweeted_status attribute, 
 		# in case it is an invalid reference, except block will be executed 
 		try: 
@@ -72,22 +109,19 @@ def scrape(words, date_since, numtweet):
 		for j in range(0, len(hashtags)): 
 			hashtext.append(hashtags[j]['text']) 
 		
+
 		# Here we are appending all the extracted information in the DataFrame 
 		ith_tweet = [username, description, location, following, 
-					followers, totaltweets, retweetcount, text, hashtext, tweetId] 
+					followers, totaltweets, retweetcount, text, hashtext, tweetId, images,replies] 
 		db.loc[len(db)] = ith_tweet 
 		
 		# Function call to print tweet data on screen 
 		printtweetdata(i, ith_tweet) 
-		for image in images:
-			media_url=image['media_url']
-			print("Images: ", media_url)
-			im = Image.open(urllib2.urlopen(media_url))
-			#im.show()
 
 		i = i+1
 	
 	
+	#Retweet solution:
 	#api.update_status('The solution to the problem is: ', tweetId)
 
 	#filename = 'scraped_tweets.csv'
@@ -106,13 +140,14 @@ if __name__ == '__main__':
 	access_secret = "aOQS9MUKEJ6kpLTk5Na1XSdNdcAAuq0rdalF7Hz0lIaoa"
 	auth = tweepy.OAuthHandler(consumer_key, consumer_secret) 
 	auth.set_access_token(access_key, access_secret) 
-	api = tweepy.API(auth) 
+	api = tweepy.API(auth)
+	user_name =  'xuxedu'
 	
 	# Enter Hashtag and initial date 
-	print("Enter Twitter HashTag to search for") 
 	words = "#save_my_plant" #Must include the pound(#) symbol to explicitly serach for only hashtags.
-	print("Enter Date since The Tweets are required in yyyy-mm--dd") 
-	date_since = None #input() 
+	print("Searching Twitter for tweets with HashTag: ", words) 
+	date_since = '2021-01-01' #input() 
+	print("Searching for Date since(The Tweets are required in yyyy-mm--dd)") 
 	
 	# number of tweets you want to extract in one run 
 	numtweet = 5
