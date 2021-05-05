@@ -22,11 +22,14 @@ dependencies:
   - certifi=2020.12.5=py36haa95532_0
   - cffi=1.14.5=py36hcd4344a_0
   - click=7.1.2=pyhd3eb1b0_0
+  - cloudpickle=1.6.0=py_0
   - colorama=0.4.4=pyhd3eb1b0_0
   - cryptography=3.4.6=py36h71e12ea_0
   - cycler=0.10.0=py36haa95532_0
   - cymem=2.0.5=py36hd77b12b_0
   - cython-blis=0.7.4=py36h2bbff1b_1
+  - cytoolz=0.11.0=py36he774522_0
+  - dask-core=2.30.0=py_0
   - decorator=4.4.2=pyhd3eb1b0_0
   - defusedxml=0.7.1=pyhd3eb1b0_0
   - entrypoints=0.3=py36_0
@@ -44,6 +47,7 @@ dependencies:
   - icu=58.2=ha925a31_3
   - idna=2.10=pyhd3eb1b0_0
   - idna_ssl=1.1.0=py36haa95532_0
+  - imageio=2.9.0=py_0
   - importlib-metadata=2.0.0=py_1
   - importlib_metadata=2.0.0=1
   - intel-openmp=2020.2=254
@@ -92,6 +96,7 @@ dependencies:
   - nbconvert=6.0.7=py36_0
   - nbformat=5.1.2=pyhd3eb1b0_1
   - nest-asyncio=1.5.1=pyhd3eb1b0_0
+  - networkx=2.5=py_0
   - nltk=3.5=py_0
   - nodejs=10.13.0=0
   - notebook=6.2.0=py36haa95532_0
@@ -127,6 +132,7 @@ dependencies:
   - python-dateutil=2.8.1=pyhd3eb1b0_0
   - python_abi=3.6=1_cp36m
   - pytz=2021.1=pyhd3eb1b0_0
+  - pywavelets=1.1.1=py36he774522_2
   - pywin32=227=py36he774522_1
   - pywinpty=0.5.7=py36_0
   - pyzmq=20.0.0=py36hd77b12b_1
@@ -135,6 +141,7 @@ dependencies:
   - requests=2.25.1=pyhd3eb1b0_0
   - rsa=4.7.2=pyhd3eb1b0_1
   - s3transfer=0.3.4=pyhd3eb1b0_0
+  - scikit-image=0.17.2=py36h1e1f486_0
   - scikit-learn=0.23.2=py36h47e9c7a_0
   - scipy=1.5.2=py36h9439919_0
   - seaborn=0.11.0=py_0
@@ -142,7 +149,6 @@ dependencies:
   - setuptools=52.0.0=py36haa95532_0
   - sip=4.19.8=py36h6538335_0
   - six=1.15.0=py36haa95532_0
-  - smart_open=2.0.0=py_0
   - spacy=2.3.5=py36h9a8d428_1
   - sqlite=3.33.0=h2a8f88b_0
   - srsly=1.0.5=py36hd77b12b_0
@@ -150,7 +156,9 @@ dependencies:
   - testpath=0.4.4=pyhd3eb1b0_0
   - thinc=7.4.5=py36h757b272_0
   - threadpoolctl=2.1.0=pyh5ca1d4c_0
+  - tifffile=2020.10.1=py36h8c2d366_2
   - tk=8.6.10=he774522_0
+  - toolz=0.11.1=py_0
   - tornado=6.1=py36h2bbff1b_0
   - tqdm=4.56.0=pyhd3eb1b0_0
   - traitlets=4.3.3=py36_0
@@ -168,6 +176,7 @@ dependencies:
   - wincertstore=0.2=py36h7fe50ca_0
   - winpty=0.4.3=4
   - xz=5.2.5=h62dcd97_0
+  - yaml=0.1.7=vc14h4cb57cf_1
   - yarl=1.5.1=py36he774522_0
   - zeromq=4.3.3=ha925a31_3
   - zipp=3.4.0=pyhd3eb1b0_0
@@ -192,6 +201,7 @@ dependencies:
     - python-twitter==3.5
     - pyyaml==5.4.1
     - requests-oauthlib==1.3.0
+    - smart-open==1.9.0
     - tensorboard==2.4.1
     - tensorboard-plugin-wit==1.8.0
     - tensorflow==2.4.0
